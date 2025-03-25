@@ -1,0 +1,7 @@
+bluetooth_joystick
+
+*.o
+
+.vscode/
+
+Makefile~
