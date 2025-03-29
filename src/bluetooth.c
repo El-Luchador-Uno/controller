@@ -1,5 +1,7 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "bluetooth.h"
-#include "utils.h"
+#include "./utils/utils.h"
 
 int is_paired() {
     char cmd[256];

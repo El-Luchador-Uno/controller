@@ -2,6 +2,7 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <unistd.h>
+#include "./gpio/gpio.h"
 
 void log_joystick_input(const char *device_path) {
     int js_fd = open(device_path, O_RDONLY);
@@ -16,8 +17,10 @@ void log_joystick_input(const char *device_path) {
             if (js.type == JS_EVENT_AXIS) {
                 if (js.number == 0) {
                     if (js.value < -10000) {
+                        setup_pwm(1024);
                         printf("Joystick moved left\n");
                     } else if (js.value > 10000) {
+                        setup_pwm(0);
                         printf("Joystick moved right\n");
                     }
                 } else if (js.number == 1) {

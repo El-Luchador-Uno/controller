@@ -1,5 +1,7 @@
 bluetooth_joystick
 
+start_bot
+
 *.o
 
 .vscode/
