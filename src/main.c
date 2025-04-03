@@ -2,6 +2,7 @@
 #include "bluetooth.h"
 #include "joystick.h"
 #include <unistd.h>
+#include "gpio/gpio.h"
 
 int main() {
     if (!is_paired()) {
@@ -15,6 +16,8 @@ int main() {
         fprintf(stderr, "Failed to connect to controller. Exiting...\n");
         return 1;
     }
+
+    initialize_wiring_pi();
 
     sleep(5);
 

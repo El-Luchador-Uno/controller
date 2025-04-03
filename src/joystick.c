@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "./gpio/gpio.h"
+#include "constants.h"
+#include <stdbool.h>
+#include "handle_move.h"
 
 void log_joystick_input(const char *device_path) {
     int js_fd = open(device_path, O_RDONLY);
@@ -17,16 +20,18 @@ void log_joystick_input(const char *device_path) {
             if (js.type == JS_EVENT_AXIS) {
                 if (js.number == 0) {
                     if (js.value < -10000) {
-                        setup_pwm(1024);
+                        handle_move(LEFT);
                         printf("Joystick moved left\n");
                     } else if (js.value > 10000) {
-                        setup_pwm(0);
+                        handle_move(RIGHT);
                         printf("Joystick moved right\n");
                     }
                 } else if (js.number == 1) {
                     if (js.value < -10000) {
+                        handle_move(UP);
                         printf("Joystick moved up\n");
                     } else if (js.value > 10000) {
+                        handle_move(DOWN);
                         printf("Joystick moved down\n");
                     }
                 }
