@@ -1,5 +1,5 @@
 #include "constants.h"
-#include "gpio/gpio.h"
+#include "gpio.h"
 #include "handle_move.h"
 
 void handle_move(enum direction dir) {

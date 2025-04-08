@@ -2,21 +2,37 @@
 #include <fcntl.h>
 #include <stdio.h>
 #include <unistd.h>
-#include "./gpio/gpio.h"
+#include "gpio.h"
 #include "constants.h"
 #include <stdbool.h>
 #include "handle_move.h"
+#include "connect_controller.h"
 
 void handle_joystick_input(const char *device_path) {
-    int js_fd = open(device_path, O_RDONLY);
+    int js_fd;
+    struct js_event js;
+    bool controller_connected = false;
+    
+    printf("Attempting to connect to controller...\n");
+    controller_connected = connect_controller();
+    
+    if (!controller_connected) {
+        printf("Failed to connect to controller initially. Exiting.\n");
+        return;
+    }
+    
+    js_fd = open(device_path, O_RDONLY);
     if (js_fd == -1) {
         perror("Error opening joystick device");
         return;
     }
-
-    struct js_event js;
+    
+    printf("Joystick device opened successfully. Starting input loop.\n");
+    
     while (1) {
-        if (read(js_fd, &js, sizeof(struct js_event)) == sizeof(struct js_event)) {
+        ssize_t bytes_read = read(js_fd, &js, sizeof(struct js_event));
+        
+        if (bytes_read == sizeof(struct js_event)) {
             if (js.type == JS_EVENT_AXIS) {
                 if (js.number == 0) {
                     if (js.value < -10000) {
@@ -41,8 +57,27 @@ void handle_joystick_input(const char *device_path) {
                     printf("A button pressed - stopping\n");
                 }
             }
+        } else {
+            printf("Error reading from joystick. Controller might be disconnected.\n");
+            
+            close(js_fd);
+            
+            printf("Attempting to reconnect to controller...\n");
+            controller_connected = connect_controller();
+            
+            if (controller_connected) {
+                js_fd = open(device_path, O_RDONLY);
+                if (js_fd == -1) {
+                    perror("Error reopening joystick device");
+                    return;
+                }
+                printf("Controller reconnected successfully.\n");
+            } else {
+                printf("Failed to reconnect to controller. Exiting.\n");
+                return;
+            }
         }
     }
-
+    
     close(js_fd);
 }
