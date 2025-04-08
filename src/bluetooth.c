@@ -25,7 +25,7 @@ int pair_controller() {
     return is_paired() ? 0 : -1;
 }
 
-int connect_controller() {
+int form_bluetooth_connection() {
     char command[256];
     snprintf(command, sizeof(command), "bluetoothctl connect %s", CONTROLLER_MAC);
 

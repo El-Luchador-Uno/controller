@@ -5,6 +5,6 @@
 
 int is_paired();
 int pair_controller();
-int connect_controller();
+int form_bluetooth_connection();
 
 #endif
