@@ -7,7 +7,8 @@ enum direction {
     UP,
     DOWN,
     LEFT,
-    RIGHT
+    RIGHT,
+    STOP
 };
 
 void handle_move(enum direction dir);

@@ -7,7 +7,7 @@
 #include <stdbool.h>
 #include "handle_move.h"
 
-void log_joystick_input(const char *device_path) {
+void handle_joystick_input(const char *device_path) {
     int js_fd = open(device_path, O_RDONLY);
     if (js_fd == -1) {
         perror("Error opening joystick device");
@@ -34,6 +34,11 @@ void log_joystick_input(const char *device_path) {
                         handle_move(DOWN);
                         printf("Joystick moved down\n");
                     }
+                }
+            } else if (js.type == JS_EVENT_BUTTON) {
+                if (js.number == 0 && js.value == 1) {
+                    handle_move(STOP);
+                    printf("A button pressed - stopping\n");
                 }
             }
         }
