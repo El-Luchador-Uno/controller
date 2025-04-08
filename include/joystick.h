@@ -3,6 +3,6 @@
 
 #include <linux/joystick.h>
 
-void log_joystick_input(const char *device_path);
+void handle_joystick_input(const char *device_path);
 
 #endif

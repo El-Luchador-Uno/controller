@@ -23,7 +23,7 @@ int main() {
 
     printf("Ready to track controller input\n");
 
-    log_joystick_input("/dev/input/js0");
+    handle_joystick_input("/dev/input/js0");
     
     return 0;
 }
