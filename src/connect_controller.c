@@ -37,6 +37,7 @@ bool connect_controller(void) {
     }
     
     if (connection_successful) {
+        sleep(10); // Wait for the controller joystick connection to be ready
         printf("Controller connected successfully after %d attempts\n", attempts);
         return true;
     } else {

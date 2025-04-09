@@ -12,6 +12,8 @@ void handle_joystick_input(const char *device_path) {
     int js_fd;
     struct js_event js;
     bool controller_connected = false;
+    // int retry_count = 0;
+    // const int max_retries = 10;
     
     printf("Attempting to connect to controller...\n");
     controller_connected = connect_controller();
@@ -21,9 +23,20 @@ void handle_joystick_input(const char *device_path) {
         return;
     }
     
-    js_fd = open(device_path, O_RDONLY);
+    // sleep(2);
+    
+    // while (retry_count < max_retries) {
+        js_fd = open(device_path, O_RDONLY);
+    //     if (js_fd != -1) {
+    //         break;
+    //     }
+    //     printf("Attempt %d: Waiting for joystick device to become available...\n", retry_count + 1);
+    //     sleep(1);
+    //     retry_count++;
+    // }
+    
     if (js_fd == -1) {
-        perror("Error opening joystick device");
+        perror("Error opening joystick device after multiple attempts");
         return;
     }
     
