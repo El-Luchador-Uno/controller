@@ -11,6 +11,6 @@ enum direction {
     STOP
 };
 
-void handle_move(enum direction dir);
+void handle_move(enum direction dir, int x, int y);
 
 #endif

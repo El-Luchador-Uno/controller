@@ -29,6 +29,12 @@ void handle_joystick_input(const char *device_path) {
     }
     
     printf("Joystick device opened successfully. Starting input loop.\n");
+
+    struct {
+        int x_axis;
+        int y_axis;
+        enum direction direction;
+    } joystick_state = {0, 0, STOP};
     
     while (1) {
         ssize_t bytes_read = read(js_fd, &js, sizeof(struct js_event));
@@ -36,28 +42,27 @@ void handle_joystick_input(const char *device_path) {
         if (bytes_read == sizeof(struct js_event)) {
             if (js.type == JS_EVENT_AXIS) {
                 if (js.number == 0) {
+                    joystick_state.x_axis = js.value;
                     if (js.value < -10000) {
-                        handle_move(LEFT);
+                        joystick_state.direction = LEFT;
                         printf("Joystick moved left\n");
                     } else if (js.value > 10000) {
-                        handle_move(RIGHT);
+                        joystick_state.direction = RIGHT;
                         printf("Joystick moved right\n");
                     }
                 } else if (js.number == 1) {
+                    joystick_state.y_axis = js.value;
                     if (js.value < -10000) {
-                        handle_move(UP);
+                        joystick_state.direction = UP;
                         printf("Joystick moved up\n");
                     } else if (js.value > 10000) {
-                        handle_move(DOWN);
+                        joystick_state.direction = DOWN;
                         printf("Joystick moved down\n");
                     }
                 }
-            } else if (js.type == JS_EVENT_BUTTON) {
-                if (js.number == 0 && js.value == 1) {
-                    handle_move(STOP);
-                    printf("A button pressed - stopping\n");
-                }
             }
+
+            handle_move(joystick_state.direction, joystick_state.x_axis, joystick_state.y_axis);
         } else {
             printf("Error reading from joystick. Controller might be disconnected.\n");
             

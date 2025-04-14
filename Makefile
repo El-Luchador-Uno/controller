@@ -7,7 +7,7 @@ EXEC=start_bot
 all: $(EXEC)
 
 $(EXEC): $(OBJ)
-	$(CC) $(CFLAGS) -o $(EXEC) $(OBJ) -l wiringPi
+	$(CC) $(CFLAGS) -o $(EXEC) $(OBJ) -l wiringPi -lm
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
