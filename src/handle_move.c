@@ -25,15 +25,15 @@ void handle_move(enum direction dir, int x, int y) {
             manage_pwm_gpio(PWMR, duty_cycle_values.right_pwm);
             gpio_configs[0] = (StandardGpioConfig){SL1, false};
             gpio_configs[1] = (StandardGpioConfig){SL2, true};
-            gpio_configs[2] = (StandardGpioConfig){SR1, false};
-            gpio_configs[3] = (StandardGpioConfig){SR2, true};
+            gpio_configs[2] = (StandardGpioConfig){SR1, true};
+            gpio_configs[3] = (StandardGpioConfig){SR2, false};
             manage_standard_gpio(gpio_configs, sizeof(gpio_configs) / sizeof(StandardGpioConfig));
             return;
         case LEFT:
             manage_pwm_gpio(PWML, duty_cycle_values.left_pwm);
             manage_pwm_gpio(PWMR, duty_cycle_values.right_pwm);
-            gpio_configs[0] = (StandardGpioConfig){SL1, false};
-            gpio_configs[1] = (StandardGpioConfig){SL2, true};
+            gpio_configs[0] = (StandardGpioConfig){SL1, true};
+            gpio_configs[1] = (StandardGpioConfig){SL2, false};
             gpio_configs[2] = (StandardGpioConfig){SR1, true};
             gpio_configs[3] = (StandardGpioConfig){SR2, false};
             manage_standard_gpio(gpio_configs, sizeof(gpio_configs) / sizeof(StandardGpioConfig));
@@ -41,8 +41,8 @@ void handle_move(enum direction dir, int x, int y) {
         case RIGHT:
             manage_pwm_gpio(PWML, duty_cycle_values.left_pwm);
             manage_pwm_gpio(PWMR, duty_cycle_values.right_pwm);
-            gpio_configs[0] = (StandardGpioConfig){SL1, true};  
-            gpio_configs[1] = (StandardGpioConfig){SL2, false};
+            gpio_configs[0] = (StandardGpioConfig){SL1, false};  
+            gpio_configs[1] = (StandardGpioConfig){SL2, true};
             gpio_configs[2] = (StandardGpioConfig){SR1, false};
             gpio_configs[3] = (StandardGpioConfig){SR2, true};
             manage_standard_gpio(gpio_configs, sizeof(gpio_configs) / sizeof(StandardGpioConfig));
